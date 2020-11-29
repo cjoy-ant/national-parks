@@ -52,7 +52,12 @@ button, input, select {
   padding: 6px;
 }
 
-#add-state-btn {
+#search-btn {
+  padding: 7px;
+  margin-top: 5px;
+}
+
+#add-state-btn, #js-max-results, #search-btn, #clear-filters-btn {
   margin-left: 20px;
 }
 
@@ -75,7 +80,8 @@ button, input, select {
 }
 
 .error p {
-  font-style: italic;
+
+  font-size: 16px;
   padding-left: 10px;
   color: darkred;
 }

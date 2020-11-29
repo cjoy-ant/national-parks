@@ -24,16 +24,19 @@
         <section class="search hidden" id="js-multiple-state-search">
         </section>
         <br>
+        <br>
         <!--max results should default to 10-->
         <label for="max-results">Maximum number of Results to Show</label>
+        <br>
         <input type="number" name="max-results" id="js-max-results" value="10">
-        <input type="submit" value="Search">
+        <br>
+        <input type="submit" id="search-btn"value="Search">
         <br><br>
         <input type="button" name="clear-filter" id="clear-filters-btn" value="Clear filters">
       </form>
-      <div class="error">
+      <section class="error">
         <p class="error-message" id="js-error-message"></p>
-      </div>
+      </section>
       <section class="results hidden" id="results">
         <h2></h2>
         <ul id="results-list">

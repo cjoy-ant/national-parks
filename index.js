@@ -56,6 +56,7 @@ const states = [
 const search = {quantity: 1};
 const statesToSearch = [];
 
+// creates html for state drop down list
 function createDropDownList(states) {
   for (let i=0; i < states.length; i++) {
     $('#js-search-term-1').append(`
@@ -82,14 +83,9 @@ function getNationalParks(statesToSearch, maxResults) {
   const params = {
     api_key: apiKey,
     limit: maxResults
-//    stateCode: state,
   }
  
-//  for (let i=0; i < search.quantity; i++) {
-//    params.stateCode = statesToSearch[i].stateCode;
-//  }
   let stateCodeString = "";
-
   for (let i=0; i < search.quantity; i++) {
     stateCodeString = stateCodeString + "&stateCode=" + statesToSearch[i].stateCode;
   }
@@ -111,22 +107,28 @@ function getNationalParks(statesToSearch, maxResults) {
 // full name, description, website URL, address
 function displayResults(responseJson) {
   console.log(responseJson);
-  $('#results-list').empty();
-  for (let i=0; i < responseJson.data.length; i++) {
-    $('#results-list').append(
-      `<li><h3>${responseJson.data[i].fullName}</h3>
-      <p>${responseJson.data[i].description}</p>
-      <p><a href="${responseJson.data[i].url}">Visit their website</a></p>
-      <p>Address:
-      <br>
-      ${responseJson.data[i].addresses[0].line1}
-      <br>
-      ${responseJson.data[i].addresses[0].city}, ${responseJson.data[i].addresses[0].stateCode} 
-      ${responseJson.data[i].addresses[0].postalCode}</p>
-      </li>`
-    );
+  
+  if (responseJson.total === "0") {
+    $('#js-error-message').text(`Oops! Looks like there aren't any national parks in that combination of areas.
+    Try another search.`);
+  } 
+  else {
+    for (let i=0; i < responseJson.data.length; i++) {
+      $('#results-list').append(
+        `<li><h3>${responseJson.data[i].fullName}</h3>
+        <p>${responseJson.data[i].description}</p>
+        <p><a href="${responseJson.data[i].url}">Visit their website</a></p>
+        <p>Address:
+        <br>
+        ${responseJson.data[i].addresses[0].line1}
+        <br>
+        ${responseJson.data[i].addresses[0].city}, ${responseJson.data[i].addresses[0].stateCode} 
+        ${responseJson.data[i].addresses[0].postalCode}</p>
+        </li>`
+      );
+    }
+    $('#results').removeClass('hidden');
   }
-  $('#results').removeClass('hidden');
 }
 
 // listens for when user clicks #add-state-btn and inputs html to #search-list
@@ -153,11 +155,12 @@ function handleClearFilters() {
     event.preventDefault();
     search.quantity = 1;
     statesToSearch.length = 0;
-//    statesToSearch = [];
-    $('#results-list').empty();
     $('#js-search-list').empty();
     $('#js-search-list').append(`<li><select class="search" id="js-search-term-1" required></select><li>`)
     createDropDownList(states);
+    $('#js-error-message').empty();
+    $('#results-list').empty();
+    $('#results').addClass('hidden');
   })
 }
 
@@ -165,18 +168,11 @@ function watchForm() {
   $('form').submit(event => {
     event.preventDefault();
     statesToSearch.length = 0;
-    $('#js-error-message').empty();
+//    $('#js-error-message').empty();
     $('#results-list').empty();
-//    const state = $('#js-search-term-1 option:selected').val();
     const maxResults = $('#js-max-results').val();
-    // HOW TO CATCH IF THEY DID NOT CHOOSE A STATE
-//    if (state === "0") {
-//      $('#js-error-message').text(`Please choose a State.`);
-//    } else {
-//      getNationalParks(state, maxResults);
       selectedStateParams();
       getNationalParks(statesToSearch, maxResults);
-//    }
   });
 }
 

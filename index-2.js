@@ -53,7 +53,7 @@ const states = [
   {number: 49, name: 'Wisconsin', code: 'WI'},
   {number: 50, name: 'Wyoming', code: 'WY'}
 ];
-const search = {quantity: 1};
+//const search = {quantity: 1};
 //const statesToSearch = [];
 
 function createDropDownList(states) {
@@ -160,7 +160,6 @@ function watchForm() {
     if (state === "0") {
       $('#js-error-message').text(`Please choose a State.`);
     } else {
-      getNationalParks(state, maxResults);
     getNationalParks(state, maxResults);
     }
   });
