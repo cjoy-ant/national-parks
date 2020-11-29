@@ -15,17 +15,25 @@
       <h1>Search for National Parks</h1>
       <p id="sub-header">Information provided by the National Parks Service</p>
       <form action="">
-        <label for="js-search-term">Search by State</label>
-        <br>
+        <label for="#js-search-list">Search by State</label>
         <!--need to be able to search for 1 or more states-->
-        <select class="search" id="js-search-term" required>
-        </select>
-        <input class="hidden" type="button" name="add-state" id="add-state-btn">
+        <ul class="search" id="js-search-list">
+          <li><select class="search" id="js-search-term-1" required></select></li>
+        </ul>
+        <input class="add-state" type="button" name="add-state" id="add-state-btn" value="Add a State">
+        <section class="search hidden" id="js-multiple-state-search">
+        </section>
+        <br>
         <!--max results should default to 10-->
-        <input type="number" name="max results" id="js-max-results" value="10">
+        <label for="max-results">Maximum number of Results to Show</label>
+        <input type="number" name="max-results" id="js-max-results" value="10">
         <input type="submit" value="Search">
+        <br><br>
+        <input type="button" name="clear-filter" id="clear-filters-btn" value="Clear filters">
       </form>
-      <p class="error-message" id="js-error-message"></p>
+      <div class="error">
+        <p class="error-message" id="js-error-message"></p>
+      </div>
       <section class="results hidden" id="results">
         <h2></h2>
         <ul id="results-list">

@@ -1,5 +1,5 @@
 const apiKey = 'Tka5KCykDbZGTDv7GDzOxpyu0PSKHiG87VVUTpte';
-const searchURL = 'https://developer.nps.gov/api/v1/parks?';
+//const searchUrl = 'https://developer.nps.gov/api/v1/parks?parkCode=acad&api_key=';
 const states = [
   {number: 0, name: 'Choose a State', code: 0},
   {number: 1, name: 'Alabama', code: 'AL'},
@@ -62,56 +62,35 @@ function createDropDownList(states) {
   }
 }
 
-//function getSelectedState() {
-//  let selectedState = $('#js-search-term option:selected').val();
-//  return selectedState;
-//}
-
-//function getMaxResults() {
-//  let maxResults = $('#js-max-results').val();
-//  return maxResults;
-//}
-
-function formatQueryParams(params) {
-   const queryItems = Object.keys(params).map(key=> 
-     `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
-   return queryItems.join('&');
+function getSelectedState() {
+  let selectedState = $('#js-search-term option:selected').val();
+  return selectedState;
 }
 
-function getNationalParks(state, maxResults) {
-  const params = {
-    api_key: apiKey,
-    stateCode: state,
-    limit: maxResults
-  }
-  const queryString = formatQueryParams(params);
-  const url = searchURL + '&' + queryString;
+function getMaxResults() {
+  let maxResults = $('#js-max-results').val();
+  return maxResults;
+}
 
-//  if (getSelectedState() === "0") {
-//    $('#js-error-message').text(`Please choose a State.`);
-//  } else {
+//function formatQueryParams(params) {
+//
+//
 
-//  fetch(`https://developer.nps.gov/api/v1/parks?&api_key=${apiKey}&stateCode=${getSelectedState()}&limit=${getMaxResults()}`)
-  console.log(url);
-
-  fetch (url)
+function getNationalParks() {
+  if (getSelectedState() === "0") {
+    $('#js-error-message').text(`Please choose a State.`);
+  } else {
+  fetch(`https://developer.nps.gov/api/v1/parks?&api_key=${apiKey}&stateCode=${getSelectedState()}&limit=${getMaxResults()}`)
     .then(response => response.json())
     .then(responseJson => displayResults(responseJson))
     .catch(error => {
       $('#js-error-message').text(`Something went wrong: ${error.message}`)
-  });
+    });
+  }
 }
 
-//function formatAddress(responseJson) {
-//  let parkAddress = "";
-//  for (let i=0; i < responseJson.data.length; i++) {
-//    parkAddress += 
-//    `<h3>Address:</h3>
-//    <p>${responseJson.data[i].addresses[0].line1}</p>
-//    <p>${responseJson.data[i].addresses[0].city}, ${responseJson.data[i].addresses[0].stateCode} ${responseJson.data[i].addresses[0].postalCode}</p>
-//    `
-//  }
-//  return parkAddress;
+//function formatAddress() {
+//  
 //}
 
 // bonus: add park's address to results
@@ -121,24 +100,13 @@ function getNationalParks(state, maxResults) {
 function displayResults(responseJson) {
   console.log(responseJson);
   $('#results-list').empty();
-  if (responseJson.total === "0") {
-    $('#js-error-message').text(`
-    Oops! Looks like there aren't any national parks within that combination of areas. Try another search.`);
-  } else {
-    for (let i=0; i < responseJson.data.length; i++) {
-      $('#results-list').append(
-        `<li><h3>${responseJson.data[i].fullName}</h3>
-        <p>${responseJson.data[i].description}</p>
-        <p><a href="${responseJson.data[i].url}">Visit their website</a></p>
-        <p>Address:
-        <br>
-        ${responseJson.data[i].addresses[0].line1}
-        <br>
-        ${responseJson.data[i].addresses[0].city}, ${responseJson.data[i].addresses[0].stateCode} 
-        ${responseJson.data[i].addresses[0].postalCode}</p>
-        </li>`
-      );
-    }
+  for (let i=0; i < responseJson.data.length; i++) {
+    $('#results-list').append(
+      `<li><h3>${responseJson.data[i].fullName}</h3>
+      <p>${responseJson.data[i].description}</p>
+      <p><a href="${responseJson.data[i].url}">Visit their website</a></p>
+      </li>`
+    );
   }
   $('#results').removeClass('hidden');
 }
@@ -163,15 +131,9 @@ function watchForm() {
   $('form').submit(event => {
     event.preventDefault();
     $('#js-error-message').empty();
-    const state = $('#js-search-term option:selected').val();
-    const maxResults = $('#js-max-results').val();
-    if (state === "0") {
-      $('#js-error-message').text(`Please choose a State.`);
-    } else {
-//    getSelectedState();
-//    getMaxResults();
-      getNationalParks(state, maxResults);
-    }
+    getSelectedState();
+    getMaxResults();
+    getNationalParks();
   });
 }
 

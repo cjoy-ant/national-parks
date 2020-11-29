@@ -1,7 +1,7 @@
 const apiKey = 'Tka5KCykDbZGTDv7GDzOxpyu0PSKHiG87VVUTpte';
 const searchURL = 'https://developer.nps.gov/api/v1/parks?';
 const states = [
-  {number: 0, name: 'Choose a State', code: 0},
+//  {number: 0, name: 'Choose a State', code: ""},
   {number: 1, name: 'Alabama', code: 'AL'},
   {number: 2, name: 'Alaska', code: 'AK'},
   {number: 3, name: 'Arizona', code: 'AZ'},
@@ -51,26 +51,26 @@ const states = [
   {number: 47, name: 'Washington', code: 'WA'},
   {number: 48, name: 'West Virgina', code: 'WV'},
   {number: 49, name: 'Wisconsin', code: 'WI'},
-  {number: 50, name: 'Wyoming', code: 'WY'},
+  {number: 50, name: 'Wyoming', code: 'WY'}
 ];
+const search = {quantity: 1};
+const statesToSearch = [];
 
 function createDropDownList(states) {
   for (let i=0; i < states.length; i++) {
-    $('select.search').append(`
+    $('#js-search-term-1').append(`
     <option id="${states[i].number}" value="${states[i].code}">${states[i].name}</option>
     `);
   }
 }
 
-//function getSelectedState() {
-//  let selectedState = $('#js-search-term option:selected').val();
-//  return selectedState;
-//}
-
-//function getMaxResults() {
-//  let maxResults = $('#js-max-results').val();
-//  return maxResults;
-//}
+// pushes selected states to statesToSearch array as objects {stateCode : value/state code}
+function selectedStateParams() {
+  for (let i=0; i < search.quantity; i++) {
+    let value = $(`#js-search-term-${i+1} option:selected`).val()
+    statesToSearch.push({"stateCode" : value});
+  }
+}
 
 function formatQueryParams(params) {
    const queryItems = Object.keys(params).map(key=> 
@@ -78,22 +78,27 @@ function formatQueryParams(params) {
    return queryItems.join('&');
 }
 
-function getNationalParks(state, maxResults) {
+function getNationalParks(statesToSearch, maxResults) {
   const params = {
     api_key: apiKey,
-    stateCode: state,
     limit: maxResults
+//    stateCode: state,
   }
+ 
+//  for (let i=0; i < search.quantity; i++) {
+//    params.stateCode = statesToSearch[i].stateCode;
+//  }
+  let stateCodeString = "";
+
+  for (let i=0; i < search.quantity; i++) {
+    stateCodeString = stateCodeString + "&stateCode=" + statesToSearch[i].stateCode;
+  }
+
   const queryString = formatQueryParams(params);
-  const url = searchURL + '&' + queryString;
+  const url = searchURL + '&' + queryString + stateCodeString;
 
-//  if (getSelectedState() === "0") {
-//    $('#js-error-message').text(`Please choose a State.`);
-//  } else {
-
-//  fetch(`https://developer.nps.gov/api/v1/parks?&api_key=${apiKey}&stateCode=${getSelectedState()}&limit=${getMaxResults()}`)
   console.log(url);
-
+  console.log('Searching for national parks')
   fetch (url)
     .then(response => response.json())
     .then(responseJson => displayResults(responseJson))
@@ -102,22 +107,8 @@ function getNationalParks(state, maxResults) {
   });
 }
 
-//function formatAddress(responseJson) {
-//  let parkAddress = "";
-//  for (let i=0; i < responseJson.data.length; i++) {
-//    parkAddress += 
-//    `<h3>Address:</h3>
-//    <p>${responseJson.data[i].addresses[0].line1}</p>
-//    <p>${responseJson.data[i].addresses[0].city}, ${responseJson.data[i].addresses[0].stateCode} ${responseJson.data[i].addresses[0].postalCode}</p>
-//    `
-//  }
-//  return parkAddress;
-//}
-
-// bonus: add park's address to results
-// insert html for address into #results-list
-// <p>Address: ${responseJson}</p>
-
+// inputs results to #results-list and displays to the DOM
+// full name, description, website URL, address
 function displayResults(responseJson) {
   console.log(responseJson);
   $('#results-list').empty();
@@ -138,37 +129,62 @@ function displayResults(responseJson) {
   $('#results').removeClass('hidden');
 }
 
-//function addState() {
-//  $('#multiple-states-search').append(
-//    `<li>
-//      
-//    </li>`
-//  );
-//}
-
-// listens for when user adds state
-//function handleAddState() {
-//  $('#add-state-btn').click(event => {
-//    event.preventDefault();
-//    addState();
-//  });
-//}
-
-function watchForm() {
-  $('form').submit(event => {
+// listens for when user clicks #add-state-btn and inputs html to #search-list
+function handleAddState() {
+  $('#add-state-btn').click(event => {
+    console.log('Adding a State');
     event.preventDefault();
-    $('#js-error-message').empty();
-    const state = $('#js-search-term option:selected').val();
-    const maxResults = $('#js-max-results').val();
-    if (state === "0") {
-      $('#js-error-message').text(`Please choose a State.`);
-    } else {
-//    getSelectedState();
-//    getMaxResults();
-      getNationalParks(state, maxResults);
+    search.quantity++;
+    $('#js-search-list').append(
+      `<li><select class="search" id="js-search-term-${search.quantity}" required></select></li>`
+    );
+    for (let i=0; i < states.length; i++) {
+      $(`#js-search-term-${search.quantity}`).append(`
+      <option id="${states[i].number}" value="${states[i].code}">${states[i].name}</option>
+      `);
     }
   });
 }
 
-$(createDropDownList(states));
-$(watchForm);
+// listens for when user clicks #clear-filters-btn and clears the DOM
+function handleClearFilters() {
+  $('#clear-filters-btn').click(event => {
+    console.log('Clearing filters')
+    event.preventDefault();
+    search.quantity = 1;
+    statesToSearch.length = 0;
+//    statesToSearch = [];
+    $('#results-list').empty();
+    $('#js-search-list').empty();
+    $('#js-search-list').append(`<li><select class="search" id="js-search-term-1" required></select><li>`)
+    createDropDownList(states);
+  })
+}
+
+function watchForm() {
+  $('form').submit(event => {
+    event.preventDefault();
+    statesToSearch.length = 0;
+    $('#js-error-message').empty();
+    $('#results-list').empty();
+//    const state = $('#js-search-term-1 option:selected').val();
+    const maxResults = $('#js-max-results').val();
+    // HOW TO CATCH IF THEY DID NOT CHOOSE A STATE
+//    if (state === "0") {
+//      $('#js-error-message').text(`Please choose a State.`);
+//    } else {
+//      getNationalParks(state, maxResults);
+      selectedStateParams();
+      getNationalParks(statesToSearch, maxResults);
+//    }
+  });
+}
+
+function runApp() {
+  createDropDownList(states);
+  handleAddState();
+  watchForm();
+  handleClearFilters();
+}
+
+$(runApp)
