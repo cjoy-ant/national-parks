@@ -1,5 +1,5 @@
 const apiKey = 'Tka5KCykDbZGTDv7GDzOxpyu0PSKHiG87VVUTpte';
-const searchURL = 'https://developer.nps.gov/api/v1/parks?';
+//const searchUrl = 'https://developer.nps.gov/api/v1/parks?parkCode=acad&api_key=';
 const states = [
   {number: 0, name: 'Choose a State', code: 0},
   {number: 1, name: 'Alabama', code: 'AL'},
@@ -62,46 +62,32 @@ function createDropDownList(states) {
   }
 }
 
-//function getSelectedState() {
-//  let selectedState = $('#js-search-term option:selected').val();
-//  return selectedState;
-//}
-
-//function getMaxResults() {
-//  let maxResults = $('#js-max-results').val();
-//  return maxResults;
-//}
-
-function formatQueryParams(params) {
-   const queryItems = Object.keys(params).map(key=> 
-     `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
-   return queryItems.join('&');
+function getSelectedState() {
+  let selectedState = $('#js-search-term option:selected').val();
+  return selectedState;
 }
 
-function getNationalParks(state, maxResults) {
-  const params = {
-    api_key: apiKey,
-    stateCode: state,
-    limit: maxResults
-  }
-  const queryString = formatQueryParams(params);
-  const url = searchURL + '&' + queryString;
+function getMaxResults() {
+  let maxResults = $('#js-max-results').val();
+  return maxResults;
+}
 
-//  if (getSelectedState() === "0") {
-//    $('#js-error-message').text(`Please choose a State.`);
-//  } else {
+//function formatQueryParams(params) {
+//
+//
 
-//  fetch(`https://developer.nps.gov/api/v1/parks?&api_key=${apiKey}&stateCode=${getSelectedState()}&limit=${getMaxResults()}`)
-  console.log(url);
-
-  fetch (url)
+function getNationalParks() {
+  if (getSelectedState() === "0") {
+    $('#js-error-message').text(`Please choose a State.`);
+  } else {
+  fetch(`https://developer.nps.gov/api/v1/parks?&api_key=${apiKey}&stateCode=${getSelectedState()}&limit=${getMaxResults()}`)
     .then(response => response.json())
     .then(responseJson => displayResults(responseJson))
     .catch(error => {
       $('#js-error-message').text(`Something went wrong: ${error.message}`)
-  });
+    });
+  }
 }
-
 
 //function formatAddress() {
 //  
@@ -145,15 +131,9 @@ function watchForm() {
   $('form').submit(event => {
     event.preventDefault();
     $('#js-error-message').empty();
-    const state = $('#js-search-term option:selected').val();
-    const maxResults = $('#js-max-results').val();
-    if (state === "0") {
-      $('#js-error-message').text(`Please choose a State.`);
-    } else {
-//    getSelectedState();
-//    getMaxResults();
-      getNationalParks(state, maxResults);
-    }
+    getSelectedState();
+    getMaxResults();
+    getNationalParks();
   });
 }
 

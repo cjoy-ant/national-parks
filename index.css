@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+
+/********** Type **********/
+
+body {
+  font-family: Raleway;
+  background: url("forest-background.jpg") no-repeat center fixed;
+  background-size: cover;
+}
+
+p {
+  font-size: 14px;
+  font-weight: 600;
+  color: #373737;
+}
+
+#sub-header {
+  font-style: italic;
+}
+
+/********** Form **********/
+div.container {
+  margin: 2%;
+}
+
+select {
+  margin: 1px;
+}
+
+button, input {
+  margin: 5px;
+}
+
+/********** Results **********/
+#results-list {
+  padding: 0;
+  list-style: none;
+}
+
+#results-list li {
+  list-style: none;
+  list-style-position: inside;
+  background-color:rgba(154, 187, 150, 0.9);
+  margin: 7%; 
+  padding: 7%;
+}
+
+.hidden {
+  display: none;
+}
+
+/********** Desktop **********/
+@media all and (min-width: 800px) {
+
+  /********** Type **********/
+  h1 {
+    font-size: 38;
+  }
+  h2 {
+    font-size: 24;
+  }
+  h3 {
+    font-size: 20;
+  }
+  p {
+    font-size: 16;
+  }
+
+  /********** Form **********/
+  div.container {
+    margin: 5%;
+  }
+
+  /********** Results **********/
+  #results-list li {
+    margin-top: 2%;
+    margin-right: 15%; 
+    margin-bottom: 2%;
+    margin-left: 15%;
+    padding-top: 3%;
+    padding-right: 5%;
+    padding-bottom: 3%;
+    padding-left: 5%;
+  }
+}

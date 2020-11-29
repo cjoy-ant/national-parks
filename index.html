@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>National Parks Finder</title>
+    <link rel="shortcut icon" href="#">
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+
+  <div class="container">
+      <h1>Search for National Parks</h1>
+      <p id="sub-header">Information provided by the National Parks Service</p>
+      <form action="">
+        <label for="js-search-term">Search by State</label>
+        <br>
+        <!--need to be able to search for 1 or more states-->
+        <select class="search" id="js-search-term" required>
+        </select>
+        <input class="hidden" type="button" name="add-state" id="add-state-btn">
+        <!--max results should default to 10-->
+        <input type="number" name="max results" id="js-max-results" value="10">
+        <input type="submit" value="Search">
+      </form>
+      <p class="error-message" id="js-error-message"></p>
+      <section class="results hidden" id="results">
+        <h2></h2>
+        <ul id="results-list">
+        </ul>
+      </section>
+    </div>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+  <script src="index-2.js"></script>
+</body>
+</html>
