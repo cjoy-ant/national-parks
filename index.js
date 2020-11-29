@@ -102,9 +102,16 @@ function getNationalParks(state, maxResults) {
   });
 }
 
-
-//function formatAddress() {
-//  
+//function formatAddress(responseJson) {
+//  let parkAddress = "";
+//  for (let i=0; i < responseJson.data.length; i++) {
+//    parkAddress += 
+//    `<h3>Address:</h3>
+//    <p>${responseJson.data[i].addresses[0].line1}</p>
+//    <p>${responseJson.data[i].addresses[0].city}, ${responseJson.data[i].addresses[0].stateCode} ${responseJson.data[i].addresses[0].postalCode}</p>
+//    `
+//  }
+//  return parkAddress;
 //}
 
 // bonus: add park's address to results
@@ -119,6 +126,12 @@ function displayResults(responseJson) {
       `<li><h3>${responseJson.data[i].fullName}</h3>
       <p>${responseJson.data[i].description}</p>
       <p><a href="${responseJson.data[i].url}">Visit their website</a></p>
+      <p>Address:
+      <br>
+      ${responseJson.data[i].addresses[0].line1}
+      <br>
+      ${responseJson.data[i].addresses[0].city}, ${responseJson.data[i].addresses[0].stateCode} 
+      ${responseJson.data[i].addresses[0].postalCode}</p>
       </li>`
     );
   }
