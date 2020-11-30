@@ -43,7 +43,7 @@ const states = [
   {number: 39, name: 'Rhode Island', code: 'RI'},
   {number: 40, name: 'South Carolina', code: 'SC'},
   {number: 41, name: 'South Dakota', code: 'SD'},
-  {number: 42, name: 'Tenneseee', code: 'TN'},
+  {number: 42, name: 'Tennessee', code: 'TN'},
   {number: 43, name: 'Texas', code: 'TX'},
   {number: 44, name: 'Utah', code: 'UT'},
   {number: 45, name: 'Vermont', code: 'VT'},
