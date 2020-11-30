@@ -49,7 +49,7 @@ const states = [
   {number: 45, name: 'Vermont', code: 'VT'},
   {number: 46, name: 'Virginia', code: 'VA'},
   {number: 47, name: 'Washington', code: 'WA'},
-  {number: 48, name: 'West Virgina', code: 'WV'},
+  {number: 48, name: 'West Virginia', code: 'WV'},
   {number: 49, name: 'Wisconsin', code: 'WI'},
   {number: 50, name: 'Wyoming', code: 'WY'}
 ];
