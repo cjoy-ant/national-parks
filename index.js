@@ -35,7 +35,7 @@ const states = [
   {number: 31, name: 'New Mexico', code: 'NM'},
   {number: 32, name: 'New York', code: 'NY'},
   {number: 33, name: 'North Carolina', code:'NC'},
-  {number: 34, name: 'Nork Dakota', code: 'ND'},
+  {number: 34, name: 'North Dakota', code: 'ND'},
   {number: 35, name: 'Ohio', code: 'OH'},
   {number: 36, name: 'Oklahoma', code:'OK'},
   {number: 37, name: 'Oregon', code: 'OR'},
