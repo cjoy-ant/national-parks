@@ -151,7 +151,7 @@ function handleAddState() {
 // listens for when user clicks #clear-filters-btn and clears the DOM
 function handleClearFilters() {
   $('#clear-filters-btn').click(event => {
-    console.log('Clearing filters')
+    console.log('Clearing filters');
     event.preventDefault();
     search.quantity = 1;
     statesToSearch.length = 0;
@@ -161,7 +161,7 @@ function handleClearFilters() {
     $('#js-error-message').empty();
     $('#results-list').empty();
     $('#results').addClass('hidden');
-  })
+  });
 }
 
 function watchForm() {
